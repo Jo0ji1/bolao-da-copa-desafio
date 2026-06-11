@@ -51,7 +51,7 @@ Projeto completo da atividade "Desafio - Sistema de Bolao da Copa do Mundo", com
 npm install
 ```
 
-2. Configure ambiente:
+1. Configure ambiente:
 
 ```bash
 cp .env.example .env
@@ -62,7 +62,7 @@ Preencha no .env:
 - EXPO_PUBLIC_SUPABASE_URL
 - EXPO_PUBLIC_SUPABASE_ANON_KEY
 
-3. Rode o app:
+1. Rode o app:
 
 ```bash
 npm run android

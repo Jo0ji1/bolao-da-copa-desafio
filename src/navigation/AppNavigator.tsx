@@ -37,9 +37,7 @@ export function AppNavigator() {
 
   return (
     <NavigationContainer theme={navTheme}>
-      {!session ? (
-        <AuthScreen />
-      ) : (
+      {session ? (
         <Tab.Navigator
           screenOptions={{
             headerShown: false,
@@ -57,6 +55,8 @@ export function AppNavigator() {
           <Tab.Screen name="Resultados" component={AdminResultsScreen} />
           <Tab.Screen name="Perfil" component={ProfileScreen} />
         </Tab.Navigator>
+      ) : (
+        <AuthScreen />
       )}
     </NavigationContainer>
   );

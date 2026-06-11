@@ -39,6 +39,7 @@
 ## 5. Entrega academica
 
 Anexar:
+
 - Link do repositorio no GitHub.
 - Video curto de demonstracao (opcional, recomendado).
 - Evidencias (prints) de:

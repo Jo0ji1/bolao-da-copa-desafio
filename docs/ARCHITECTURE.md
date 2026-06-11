@@ -41,6 +41,7 @@ A regra e aplicada automaticamente no banco por trigger/funcoes SQL.
 ## Modelagem de dados
 
 Tabelas:
+
 - profiles
 - matches
 - predictions
@@ -48,6 +49,7 @@ Tabelas:
 - pool_members
 
 Views:
+
 - leaderboard_overall
 - leaderboard_by_pool
 
