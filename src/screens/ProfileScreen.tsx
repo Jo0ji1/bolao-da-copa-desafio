@@ -10,7 +10,6 @@ export function ProfileScreen() {
   const { profile, session, refreshProfile } = useAuth();
   const [displayName, setDisplayName] = useState(profile?.display_name ?? '');
   const [loading, setLoading] = useState(false);
-  const [showAdminGuide, setShowAdminGuide] = useState(false);
 
   const saveProfile = async () => {
     if (!session?.user.id || !displayName.trim()) {
@@ -77,40 +76,8 @@ export function ProfileScreen() {
       <View style={styles.tipCard}>
         <MaterialCommunityIcons name="shield-crown-outline" size={18} color={theme.colors.accent} />
         <Text style={styles.tipText}>
-          O administrador do sistema é um usuário normal cujo campo <Text style={styles.code}>profiles.is_admin</Text> foi ativado no Supabase.
+          Seu tipo de acesso é gerenciado automaticamente pelo sistema do bolão.
         </Text>
-      </View>
-
-      <View style={styles.adminCard}>
-        <View style={styles.adminTop}>
-          <Text style={styles.adminTitle}>Como ativar acesso admin</Text>
-          <View style={[styles.adminStatus, profile?.is_admin ? styles.adminStatusOn : styles.adminStatusOff]}>
-            <Text style={styles.adminStatusText}>{profile?.is_admin ? 'Ativo' : 'Inativo'}</Text>
-          </View>
-        </View>
-
-        <Text style={styles.adminDescription}>
-          O controle é feito no Supabase. Não existe senha separada para admin dentro do app.
-        </Text>
-
-        <AppButton
-          title={showAdminGuide ? 'Ocultar passo a passo' : 'Ver passo a passo'}
-          compact
-          variant="secondary"
-          onPress={() => setShowAdminGuide((prev) => !prev)}
-        />
-
-        {showAdminGuide && (
-          <View style={styles.adminGuideBox}>
-            <Text style={styles.adminStep}>1. Abra o Supabase SQL Editor.</Text>
-            <Text style={styles.adminStep}>2. Rode o comando abaixo para o e-mail do usuário:</Text>
-            <Text style={styles.sqlBlock}>
-              update public.profiles set is_admin = true where id = (select id from auth.users where email = '{session?.user.email}');
-            </Text>
-            <Text style={styles.adminStep}>3. Faça logout e login novamente no app.</Text>
-            <Text style={styles.adminStep}>4. A aba Resultados oficiais será exibida automaticamente.</Text>
-          </View>
-        )}
       </View>
     </View>
   );
@@ -209,67 +176,5 @@ const styles = StyleSheet.create({
     flex: 1,
     color: theme.colors.textSoft,
     lineHeight: 19,
-  },
-  code: {
-    color: theme.colors.primary,
-    fontWeight: '800',
-  },
-  adminCard: {
-    backgroundColor: theme.colors.cardAlt,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    padding: 12,
-    gap: 10,
-  },
-  adminTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 8,
-  },
-  adminTitle: {
-    color: theme.colors.text,
-    fontWeight: '800',
-    fontSize: 15,
-  },
-  adminStatus: {
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  adminStatusOn: {
-    backgroundColor: theme.colors.successSoft,
-  },
-  adminStatusOff: {
-    backgroundColor: theme.colors.dangerSoft,
-  },
-  adminStatusText: {
-    color: theme.colors.text,
-    fontWeight: '700',
-    fontSize: 11,
-  },
-  adminDescription: {
-    color: theme.colors.textSoft,
-    lineHeight: 18,
-  },
-  adminGuideBox: {
-    backgroundColor: theme.colors.card,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    padding: 10,
-    gap: 6,
-  },
-  adminStep: {
-    color: theme.colors.textSoft,
-    lineHeight: 18,
-  },
-  sqlBlock: {
-    color: theme.colors.primary,
-    backgroundColor: theme.colors.primarySoft,
-    borderRadius: 10,
-    padding: 8,
-    fontWeight: '700',
   },
 });

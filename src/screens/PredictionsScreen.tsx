@@ -19,6 +19,7 @@ export function PredictionsScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<MatchFilter>('all');
+  const [showHowTo, setShowHowTo] = useState(false);
 
   const fetchData = useCallback(async () => {
     if (!session?.user.id) {
@@ -181,60 +182,6 @@ export function PredictionsScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.hero}>
-        <View style={styles.heroTop}>
-          <View style={styles.badge}>
-            <MaterialCommunityIcons name="soccer" size={16} color={theme.colors.primary} />
-            <Text style={styles.badgeText}>Palpites ao vivo</Text>
-          </View>
-          <View style={styles.statusBadge}>
-            <Text style={styles.statusBadgeText}>{matches.length} jogos</Text>
-          </View>
-        </View>
-        <Text style={styles.header}>Palpites</Text>
-        <Text style={styles.subtitle}>Monte seus palpites antes do kickoff. O sistema bloqueia o jogo quando a partida começa.</Text>
-        <Text style={styles.summary}>{finishedCount}/{matches.length} partidas com resultado oficial</Text>
-
-        <View style={styles.metricsRow}>
-          <View style={styles.metricCard}>
-            <Text style={styles.metricValue}>{upcomingCount}</Text>
-            <Text style={styles.metricLabel}>Abertas agora</Text>
-          </View>
-          <View style={styles.metricCard}>
-            <Text style={styles.metricValue}>{scoredCount}</Text>
-            <Text style={styles.metricLabel}>Palpites pontuados</Text>
-          </View>
-          <View style={styles.metricCard}>
-            <Text style={styles.metricValue}>{matches.length}</Text>
-            <Text style={styles.metricLabel}>Total de jogos</Text>
-          </View>
-          <View style={styles.metricCard}>
-            <Text style={styles.metricValue}>{totalPoints}</Text>
-            <Text style={styles.metricLabel}>Pontos somados</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.howCard}>
-        <Text style={styles.howTitle}>Como apostar</Text>
-        <Text style={styles.howText}>1. Preencha placar exato ou apenas o vencedor.</Text>
-        <Text style={styles.howText}>2. Salve antes do início do jogo.</Text>
-        <Text style={styles.howText}>3. Quando o admin publica o resultado, a pontuação atualiza automaticamente.</Text>
-      </View>
-
-      <View style={styles.filterRow}>
-        {filterButtons.map((item) => (
-          <AppButton
-            key={item.id}
-            title={item.label}
-            compact
-            style={styles.filterButton}
-            onPress={() => setFilter(item.id)}
-            variant={filter === item.id ? 'primary' : 'secondary'}
-          />
-        ))}
-      </View>
-
       <FlatList
         style={styles.list}
         data={filteredMatches}
@@ -243,6 +190,75 @@ export function PredictionsScreen() {
         removeClippedSubviews
         initialNumToRender={6}
         windowSize={7}
+        ListHeaderComponent={
+          <View style={styles.topContent}>
+            <View style={styles.hero}>
+              <View style={styles.heroTop}>
+                <View style={styles.badge}>
+                  <MaterialCommunityIcons name="soccer" size={16} color={theme.colors.primary} />
+                  <Text style={styles.badgeText}>Palpites ao vivo</Text>
+                </View>
+                <View style={styles.statusBadge}>
+                  <Text style={styles.statusBadgeText}>{matches.length} jogos</Text>
+                </View>
+              </View>
+              <Text style={styles.header}>Palpites</Text>
+              <Text style={styles.subtitle}>Monte seus palpites antes do kickoff. O sistema bloqueia o jogo quando a partida começa.</Text>
+              <Text style={styles.summary}>{finishedCount}/{matches.length} partidas com resultado oficial</Text>
+
+              <View style={styles.metricsRow}>
+                <View style={styles.metricCard}>
+                  <Text style={styles.metricValue}>{upcomingCount}</Text>
+                  <Text style={styles.metricLabel}>Abertas agora</Text>
+                </View>
+                <View style={styles.metricCard}>
+                  <Text style={styles.metricValue}>{scoredCount}</Text>
+                  <Text style={styles.metricLabel}>Palpites pontuados</Text>
+                </View>
+                <View style={styles.metricCard}>
+                  <Text style={styles.metricValue}>{matches.length}</Text>
+                  <Text style={styles.metricLabel}>Total de jogos</Text>
+                </View>
+                <View style={styles.metricCard}>
+                  <Text style={styles.metricValue}>{totalPoints}</Text>
+                  <Text style={styles.metricLabel}>Pontos somados</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.howCard}>
+              <View style={styles.howTop}>
+                <Text style={styles.howTitle}>Como apostar</Text>
+                <AppButton
+                  title={showHowTo ? 'Ocultar' : 'Mostrar'}
+                  compact
+                  variant="secondary"
+                  onPress={() => setShowHowTo((prev) => !prev)}
+                />
+              </View>
+              {showHowTo && (
+                <View style={styles.howSteps}>
+                  <Text style={styles.howText}>1. Preencha placar exato ou apenas o vencedor.</Text>
+                  <Text style={styles.howText}>2. Salve antes do início do jogo.</Text>
+                  <Text style={styles.howText}>3. Quando o admin publica o resultado, a pontuação atualiza automaticamente.</Text>
+                </View>
+              )}
+            </View>
+
+            <View style={styles.filterRow}>
+              {filterButtons.map((item) => (
+                <AppButton
+                  key={item.id}
+                  title={item.label}
+                  compact
+                  style={styles.filterButton}
+                  onPress={() => setFilter(item.id)}
+                  variant={filter === item.id ? 'primary' : 'secondary'}
+                />
+              ))}
+            </View>
+          </View>
+        }
         ListEmptyComponent={
           loading ? <Text style={styles.empty}>Carregando partidas...</Text> : <Text style={styles.empty}>Nenhuma partida encontrada neste filtro.</Text>
         }
@@ -257,8 +273,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.bg,
-    padding: 14,
-    gap: 12,
+    paddingHorizontal: 14,
+    paddingTop: 14,
+  },
+  topContent: {
+    gap: 10,
+    marginBottom: 10,
   },
   hero: {
     backgroundColor: theme.colors.card,
@@ -346,6 +366,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.border,
   },
+  howTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  howSteps: {
+    gap: 6,
+  },
   howTitle: {
     color: theme.colors.text,
     fontWeight: '800',
@@ -366,11 +395,11 @@ const styles = StyleSheet.create({
     minWidth: 130,
   },
   list: {
-    marginTop: 8,
+    flex: 1,
   },
   content: {
     gap: 10,
-    paddingBottom: 20,
+    paddingBottom: 28,
   },
   empty: {
     color: theme.colors.muted,

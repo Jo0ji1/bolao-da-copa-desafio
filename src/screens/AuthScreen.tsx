@@ -56,7 +56,7 @@ export function AuthScreen() {
         <View style={styles.hero}>
           <View style={styles.heroBadge}>
             <MaterialCommunityIcons name="trophy-variant" size={18} color={theme.colors.primary} />
-            <Text style={styles.heroBadgeText}>Bolao da Copa</Text>
+            <Text style={styles.heroBadgeText}>Bolão da Copa</Text>
           </View>
           <Text style={styles.title}>Palpite, pontue e dispute com estilo.</Text>
           <Text style={styles.subtitle}>
@@ -106,7 +106,7 @@ export function AuthScreen() {
           />
 
           <AppButton
-            title={mode === 'login' ? 'Nao tem conta? Cadastre-se' : 'Ja tem conta? Entrar'}
+            title={mode === 'login' ? 'Não tem conta? Cadastre-se' : 'Já tem conta? Entrar'}
             onPress={() => setMode(mode === 'login' ? 'register' : 'login')}
             variant="secondary"
           />

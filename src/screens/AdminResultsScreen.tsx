@@ -73,8 +73,7 @@ export function AdminResultsScreen() {
           </View>
           <Text style={styles.header}>Resultados oficiais</Text>
           <Text style={styles.warning}>
-            Somente administradores podem editar resultados. O admin é definido no Supabase com{' '}
-            <Text style={styles.code}>profiles.is_admin</Text>.
+            Somente organizadores autorizados podem editar resultados oficiais.
           </Text>
         </View>
       </View>
@@ -170,10 +169,6 @@ const styles = StyleSheet.create({
   warning: {
     color: theme.colors.textSoft,
     lineHeight: 20,
-  },
-  code: {
-    color: theme.colors.primary,
-    fontWeight: '800',
   },
   card: {
     backgroundColor: theme.colors.card,

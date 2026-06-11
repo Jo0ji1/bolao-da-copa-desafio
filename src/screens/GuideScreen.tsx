@@ -16,12 +16,12 @@ const steps = [
   {
     icon: 'shield-crown-outline' as const,
     title: 'Controle do admin',
-    text: 'Somente o usuario marcado como administrador no Supabase publica resultados oficiais.',
+    text: 'Somente usuários autorizados publicam resultados oficiais.',
   },
   {
     icon: 'account-group-outline' as const,
     title: 'Grupos privados',
-    text: 'Voce pode criar grupos, compartilhar o codigo e disputar com amigos no mesmo bolao.',
+    text: 'Você pode criar grupos, compartilhar o código e disputar com amigos no mesmo bolão.',
   },
 ];
 
@@ -40,16 +40,16 @@ export function GuideScreen() {
           <MaterialCommunityIcons name="soccer" size={18} color={theme.colors.primary} />
           <Text style={styles.heroBadgeText}>Guia rapido</Text>
         </View>
-        <Text style={styles.title}>Como o bolao funciona</Text>
+        <Text style={styles.title}>Como o bolão funciona</Text>
         <Text style={styles.subtitle}>
-          O fluxo foi desenhado para deixar claro quem joga, quem administra e como a pontuacao evolui.
+          O fluxo foi desenhado para deixar claro quem joga, quem administra e como a pontuação evolui.
         </Text>
       </View>
 
       <View style={styles.noticeCard}>
         <MaterialCommunityIcons name="shield-crown-outline" size={18} color={theme.colors.accent} />
         <Text style={styles.noticeText}>
-          O admin e apenas um usuario comum com permissao especial no Supabase. Se voce nao for admin, esta aba resume tudo que precisa saber.
+          O admin é apenas um usuário comum com permissão especial. Se você não for admin, esta aba resume tudo que precisa saber.
         </Text>
       </View>
 
@@ -68,10 +68,9 @@ export function GuideScreen() {
       <View style={styles.callout}>
         <MaterialCommunityIcons name="information-outline" size={22} color={theme.colors.accent} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.calloutTitle}>Admin definido no banco</Text>
+          <Text style={styles.calloutTitle}>Pontuação atualizada automaticamente</Text>
           <Text style={styles.calloutText}>
-            O administrador é um usuário comum cuja coluna <Text style={styles.code}>profiles.is_admin</Text> foi ativada no Supabase.
-            Assim o app não precisa de um login separado para o controle oficial.
+            Assim que um resultado oficial é salvo, a classificação de todos os participantes é atualizada no ranking.
           </Text>
         </View>
       </View>
@@ -178,9 +177,5 @@ const styles = StyleSheet.create({
   calloutText: {
     color: theme.colors.textSoft,
     lineHeight: 20,
-  },
-  code: {
-    color: theme.colors.primary,
-    fontWeight: '800',
   },
 });

@@ -107,7 +107,7 @@ export function GroupsScreen() {
             <MaterialCommunityIcons name="account-group-outline" size={16} color={theme.colors.primary} />
             <Text style={styles.badgeText}>Bolao privado</Text>
           </View>
-          <Text style={styles.heroNote}>convide amigos com o codigo</Text>
+          <Text style={styles.heroNote}>convide amigos com o código</Text>
         </View>
         <Text style={styles.header}>Grupos</Text>
         <Text style={styles.subtitle}>
