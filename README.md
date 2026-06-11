@@ -43,6 +43,20 @@ Projeto completo da atividade "Desafio - Sistema de Bolao da Copa do Mundo", com
 - 3 pontos: acerto do vencedor/empate.
 - 0 pontos: erro.
 
+## Como os palpites funcionam
+
+1. O participante acessa a aba Palpites e escolhe uma partida futura.
+2. Pode informar o placar exato ou apenas o vencedor/empate.
+3. O sistema bloqueia o envio depois do horario de inicio do jogo.
+4. Quando o admin publica o resultado oficial, a pontuacao e recalculada automaticamente.
+
+## Quem e o admin
+
+- O admin nao e um login separado.
+- Ele e um usuario comum do app com o campo `profiles.is_admin = true` no Supabase.
+- O app mostra a aba Resultados apenas para esse usuario; para os demais, aparece a aba Guia.
+- A alteracao e feita diretamente no banco com um update na tabela `profiles`.
+
 ## Como rodar localmente
 
 1. Instale dependencias:
@@ -93,6 +107,7 @@ where id = 'UUID_DO_USUARIO';
 3. Admin publica resultados oficiais.
 4. Sistema recalcula pontos automaticamente.
 5. Ranking geral e por grupo sao atualizados.
+6. Usuarios nao administradores veem a aba Guia com a explicacao do funcionamento.
 
 ## Publicar no GitHub
 

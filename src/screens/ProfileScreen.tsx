@@ -1,5 +1,6 @@
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useState } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { theme } from '../constants/theme';
@@ -39,19 +40,45 @@ export function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Perfil</Text>
-      <Text style={styles.label}>E-mail</Text>
-      <Text style={styles.value}>{session?.user.email}</Text>
-      <Text style={styles.label}>Nome de exibicao</Text>
-      <TextInput
-        style={styles.input}
-        value={displayName}
-        onChangeText={setDisplayName}
-        placeholder="Seu nome"
-        placeholderTextColor={theme.colors.muted}
-      />
-      <AppButton title="Salvar perfil" onPress={saveProfile} loading={loading} />
-      <AppButton title="Sair" onPress={logout} variant="danger" />
+      <View style={styles.hero}>
+        <View style={styles.heroTop}>
+          <View style={styles.avatar}>
+            <MaterialCommunityIcons name="account" size={22} color={theme.colors.primary} />
+          </View>
+          <View style={[styles.roleBadge, profile?.is_admin ? styles.roleAdmin : styles.roleUser]}>
+            <Text style={styles.roleText}>{profile?.is_admin ? 'Administrador' : 'Participante'}</Text>
+          </View>
+        </View>
+        <Text style={styles.header}>Perfil</Text>
+        <Text style={styles.subtitle}>
+          {profile?.is_admin
+            ? 'Voce controla os resultados oficiais e o ranking do bolao.'
+            : 'Voce participa dos palpites e acompanha a pontuacao atualizada.'}
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>E-mail</Text>
+        <Text style={styles.value}>{session?.user.email}</Text>
+        <Text style={styles.label}>Nome de exibicao</Text>
+        <TextInput
+          style={styles.input}
+          value={displayName}
+          onChangeText={setDisplayName}
+          placeholder="Seu nome"
+          placeholderTextColor={theme.colors.muted}
+        />
+
+        <AppButton title="Salvar perfil" onPress={saveProfile} loading={loading} />
+        <AppButton title="Sair" onPress={logout} variant="danger" />
+      </View>
+
+      <View style={styles.tipCard}>
+        <MaterialCommunityIcons name="shield-crown-outline" size={18} color={theme.colors.accent} />
+        <Text style={styles.tipText}>
+          O administrador do sistema e um usuario normal cujo campo <Text style={styles.code}>profiles.is_admin</Text> foi ativado no Supabase. Sem isso, a aba de resultados fica oculta.
+        </Text>
+      </View>
     </View>
   );
 }
@@ -63,17 +90,67 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 10,
   },
+  hero: {
+    backgroundColor: theme.colors.card,
+    borderColor: theme.colors.border,
+    borderWidth: 1,
+    borderRadius: 24,
+    padding: 16,
+    gap: 10,
+  },
+  heroTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  avatar: {
+    width: 46,
+    height: 46,
+    borderRadius: 16,
+    backgroundColor: theme.colors.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  roleBadge: {
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  roleAdmin: {
+    backgroundColor: theme.colors.primarySoft,
+  },
+  roleUser: {
+    backgroundColor: theme.colors.accentSoft,
+  },
+  roleText: {
+    color: theme.colors.text,
+    fontWeight: '800',
+    fontSize: 12,
+  },
   header: {
     color: theme.colors.text,
-    fontSize: 28,
-    fontWeight: '800',
+    fontSize: 30,
+    fontWeight: '900',
+  },
+  subtitle: {
+    color: theme.colors.textSoft,
+    lineHeight: 20,
+  },
+  card: {
+    backgroundColor: theme.colors.cardAlt,
+    borderColor: theme.colors.border,
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 14,
+    gap: 8,
   },
   label: {
-    color: theme.colors.muted,
+    color: theme.colors.textSoft,
     marginTop: 6,
   },
   value: {
     color: theme.colors.text,
+    fontWeight: '700',
   },
   input: {
     backgroundColor: theme.colors.card,
@@ -83,5 +160,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     color: theme.colors.text,
+  },
+  tipCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    backgroundColor: theme.colors.card,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    padding: 12,
+    marginTop: 4,
+  },
+  tipText: {
+    flex: 1,
+    color: theme.colors.textSoft,
+    lineHeight: 19,
+  },
+  code: {
+    color: theme.colors.primary,
+    fontWeight: '800',
   },
 });

@@ -36,6 +36,12 @@ Aplicativo mobile em React Native (Expo) com backend no Supabase.
 - 3 pontos: acerto do vencedor/empate.
 - 0 pontos: erro.
 
+## Controle de admin
+
+- O admin e um usuario normal do sistema.
+- O privilegio e dado por `profiles.is_admin = true` no Supabase.
+- A interface oculta a area de resultados para participantes comuns e mostra um guia explicativo.
+
 A regra e aplicada automaticamente no banco por trigger/funcoes SQL.
 
 ## Modelagem de dados

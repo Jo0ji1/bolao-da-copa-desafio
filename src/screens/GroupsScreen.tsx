@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { Pool } from '../types';
@@ -100,10 +101,25 @@ export function GroupsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Grupos</Text>
+      <View style={styles.hero}>
+        <View style={styles.heroTop}>
+          <View style={styles.badge}>
+            <MaterialCommunityIcons name="account-group-outline" size={16} color={theme.colors.primary} />
+            <Text style={styles.badgeText}>Bolao privado</Text>
+          </View>
+          <Text style={styles.heroNote}>convide amigos com o codigo</Text>
+        </View>
+        <Text style={styles.header}>Grupos</Text>
+        <Text style={styles.subtitle}>
+          Crie bolões privados e acompanhe a disputa somente com as pessoas do seu grupo.
+        </Text>
+      </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Criar grupo privado</Text>
+        <View style={styles.cardTitleRow}>
+          <MaterialCommunityIcons name="plus-circle-outline" size={18} color={theme.colors.primary} />
+          <Text style={styles.cardTitle}>Criar grupo privado</Text>
+        </View>
         <TextInput
           style={styles.input}
           value={groupName}
@@ -115,7 +131,10 @@ export function GroupsScreen() {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Entrar por codigo</Text>
+        <View style={styles.cardTitleRow}>
+          <MaterialCommunityIcons name="key-variant" size={18} color={theme.colors.accent} />
+          <Text style={styles.cardTitle}>Entrar por codigo</Text>
+        </View>
         <TextInput
           style={styles.input}
           value={joinCode}
@@ -127,7 +146,10 @@ export function GroupsScreen() {
         <AppButton title="Entrar" onPress={joinGroup} variant="secondary" />
       </View>
 
-      <Text style={styles.section}>Meus grupos</Text>
+      <View style={styles.sectionRow}>
+        <MaterialCommunityIcons name="bookmark-multiple-outline" size={16} color={theme.colors.textSoft} />
+        <Text style={styles.section}>Meus grupos</Text>
+      </View>
       <FlatList
         data={myPools}
         keyExtractor={(item) => item.id}
@@ -151,18 +173,59 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 10,
   },
+  hero: {
+    backgroundColor: theme.colors.card,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    padding: 16,
+    gap: 10,
+  },
+  heroTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  badge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: theme.colors.primarySoft,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  badgeText: {
+    color: theme.colors.primary,
+    fontWeight: '800',
+  },
+  heroNote: {
+    color: theme.colors.textSoft,
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+  },
   header: {
     color: theme.colors.text,
-    fontSize: 28,
-    fontWeight: '800',
+    fontSize: 30,
+    fontWeight: '900',
+  },
+  subtitle: {
+    color: theme.colors.textSoft,
+    lineHeight: 20,
   },
   card: {
     backgroundColor: theme.colors.card,
     borderColor: theme.colors.border,
     borderWidth: 1,
-    borderRadius: 14,
+    borderRadius: 20,
     padding: 12,
     gap: 10,
+  },
+  cardTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   cardTitle: {
     color: theme.colors.text,
@@ -177,15 +240,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     color: theme.colors.text,
   },
-  section: {
-    color: theme.colors.muted,
+  sectionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     marginTop: 4,
+  },
+  section: {
+    color: theme.colors.textSoft,
+    fontWeight: '700',
   },
   groupRow: {
     backgroundColor: theme.colors.card,
     borderColor: theme.colors.border,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: 18,
     padding: 12,
   },
   groupName: {
@@ -194,9 +263,10 @@ const styles = StyleSheet.create({
   },
   groupCode: {
     color: theme.colors.primary,
+    fontWeight: '700',
   },
   empty: {
-    color: theme.colors.muted,
+    color: theme.colors.textSoft,
     textAlign: 'center',
     marginTop: 20,
   },

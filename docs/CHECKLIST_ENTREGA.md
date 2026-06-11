@@ -25,6 +25,7 @@
 5. Criar grupo e entrar com outro usuario usando codigo.
 6. Verificar ranking por grupo.
 7. Ativar lembretes de notificacao.
+8. Confirmar que usuarios comuns veem a aba Guia e o admin ve a aba Resultados.
 
 ## 4. Publicacao no GitHub
 

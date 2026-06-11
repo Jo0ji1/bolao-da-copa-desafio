@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { theme } from '../constants/theme';
 import { MatchItem } from '../types';
@@ -65,15 +66,33 @@ export function AdminResultsScreen() {
   if (!profile?.is_admin) {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Resultados oficiais</Text>
-        <Text style={styles.warning}>Somente administradores podem editar resultados.</Text>
+        <View style={styles.hero}>
+          <View style={styles.badge}>
+            <MaterialCommunityIcons name="shield-lock-outline" size={16} color={theme.colors.primary} />
+            <Text style={styles.badgeText}>Acesso restrito</Text>
+          </View>
+          <Text style={styles.header}>Resultados oficiais</Text>
+          <Text style={styles.warning}>
+            Somente administradores podem editar resultados. O admin e definido no Supabase com{' '}
+            <Text style={styles.code}>profiles.is_admin</Text>.
+          </Text>
+        </View>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Resultados oficiais</Text>
+      <View style={styles.hero}>
+        <View style={styles.badge}>
+          <MaterialCommunityIcons name="clipboard-check-outline" size={16} color={theme.colors.primary} />
+          <Text style={styles.badgeText}>Painel do admin</Text>
+        </View>
+        <Text style={styles.header}>Resultados oficiais</Text>
+        <Text style={styles.warning}>
+          Atualize os placares aqui. Assim que salvar, a pontuacao das apostas e recalculada automaticamente.
+        </Text>
+      </View>
       <FlatList
         data={matches}
         keyExtractor={(item) => item.id}
@@ -121,19 +140,46 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 10,
   },
-  header: {
-    color: theme.colors.text,
-    fontSize: 28,
+  hero: {
+    backgroundColor: theme.colors.card,
+    borderColor: theme.colors.border,
+    borderWidth: 1,
+    borderRadius: 24,
+    padding: 16,
+    gap: 10,
+  },
+  badge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    alignSelf: 'flex-start',
+    backgroundColor: theme.colors.primarySoft,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  badgeText: {
+    color: theme.colors.primary,
     fontWeight: '800',
   },
+  header: {
+    color: theme.colors.text,
+    fontSize: 30,
+    fontWeight: '900',
+  },
   warning: {
-    color: theme.colors.muted,
+    color: theme.colors.textSoft,
+    lineHeight: 20,
+  },
+  code: {
+    color: theme.colors.primary,
+    fontWeight: '800',
   },
   card: {
     backgroundColor: theme.colors.card,
     borderColor: theme.colors.border,
     borderWidth: 1,
-    borderRadius: 14,
+    borderRadius: 20,
     padding: 12,
     gap: 8,
   },
@@ -145,6 +191,7 @@ const styles = StyleSheet.create({
   stage: {
     color: theme.colors.primary,
     fontSize: 12,
+    fontWeight: '700',
   },
   row: {
     flexDirection: 'row',
