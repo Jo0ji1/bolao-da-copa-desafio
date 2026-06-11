@@ -6,7 +6,7 @@ import { MatchItem, Prediction, Winner } from '../types';
 import { supabase } from '../lib/supabase';
 import { AppButton } from '../components/AppButton';
 import { MatchCard } from '../components/MatchCard';
-import { registerForPushNotifications, scheduleMatchReminder } from '../lib/notifications';
+import { enableLocalNotifications, isExpoGoPushUnsupportedMessage, scheduleMatchReminder } from '../lib/notifications';
 
 type DraftMap = Record<string, { home: string; away: string; winner: Winner | null }>;
 
@@ -124,9 +124,9 @@ export function PredictionsScreen() {
   };
 
   const scheduleAllReminders = async () => {
-    const token = await registerForPushNotifications();
-    if (!token) {
-      Alert.alert('Aviso', 'Nao foi possivel habilitar notificacoes neste dispositivo.');
+    const enabled = await enableLocalNotifications();
+    if (!enabled) {
+      Alert.alert('Aviso', 'Permissao de notificacoes negada.');
       return;
     }
 
@@ -135,7 +135,7 @@ export function PredictionsScreen() {
       await scheduleMatchReminder(match.home_team, match.away_team, match.kickoff_at);
     }
 
-    Alert.alert('Lembretes ativos', 'Voce sera avisado 1 hora antes das proximas partidas.');
+    Alert.alert('Lembretes ativos', 'Lembretes locais configurados para as proximas partidas.');
   };
 
   const title = useMemo(() => {
@@ -147,6 +147,7 @@ export function PredictionsScreen() {
     <View style={styles.container}>
       <Text style={styles.header}>Palpites</Text>
       <Text style={styles.subtitle}>{title}</Text>
+      <Text style={styles.notice}>{isExpoGoPushUnsupportedMessage()}</Text>
       <AppButton title="Ativar lembretes" onPress={scheduleAllReminders} variant="secondary" />
 
       <FlatList
@@ -196,6 +197,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: theme.colors.muted,
+  },
+  notice: {
+    color: theme.colors.primary,
+    fontSize: 12,
   },
   list: {
     marginTop: 8,

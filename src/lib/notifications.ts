@@ -1,4 +1,3 @@
-import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
@@ -12,11 +11,11 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export async function registerForPushNotifications() {
-  if (!Device.isDevice) {
-    return null;
-  }
+export function isExpoGoPushUnsupportedMessage() {
+  return 'Este app usa apenas lembretes locais no Expo Go. Para push remoto, use development build.';
+}
 
+export async function enableLocalNotifications() {
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
 
@@ -26,7 +25,7 @@ export async function registerForPushNotifications() {
   }
 
   if (finalStatus !== 'granted') {
-    return null;
+    return false;
   }
 
   if (Platform.OS === 'android') {
@@ -36,8 +35,7 @@ export async function registerForPushNotifications() {
     });
   }
 
-  const token = await Notifications.getExpoPushTokenAsync();
-  return token.data;
+  return true;
 }
 
 export async function scheduleMatchReminder(homeTeam: string, awayTeam: string, kickoffAt: string) {

@@ -109,4 +109,5 @@ git push -u origin main
 
 - Projeto atende todos os requisitos obrigatorios da atividade.
 - Inclui opcionais: grupos privados e notificacao.
+- No Expo Go, os lembretes funcionam de forma local; push remoto exige development build.
 - Integracao com API externa de resultados pode ser adicionada em evolucao futura com Edge Functions do Supabase.

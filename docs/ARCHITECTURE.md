@@ -6,7 +6,7 @@ Aplicativo mobile em React Native (Expo) com backend no Supabase.
 
 - Frontend: Expo + TypeScript + React Navigation.
 - Backend: Supabase (Postgres + Auth + RLS).
-- Notificacoes: expo-notifications para lembretes locais.
+- Notificacoes: expo-notifications para lembretes locais. Push remoto exige development build.
 
 ## Modulos principais
 
