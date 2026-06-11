@@ -74,7 +74,7 @@ export function AuthScreen() {
             <TextInput
               value={displayName}
               onChangeText={setDisplayName}
-              placeholder="Nome de exibicao"
+              placeholder="Nome de exibição"
               placeholderTextColor={theme.colors.muted}
               style={styles.input}
             />

@@ -45,7 +45,7 @@ export function AdminResultsScreen() {
     const away = Number(d.away);
 
     if (Number.isNaN(home) || Number.isNaN(away)) {
-      Alert.alert('Atenção', 'Informe placares validos.');
+      Alert.alert('Atenção', 'Informe placares válidos.');
       return;
     }
 
@@ -73,7 +73,7 @@ export function AdminResultsScreen() {
           </View>
           <Text style={styles.header}>Resultados oficiais</Text>
           <Text style={styles.warning}>
-            Somente administradores podem editar resultados. O admin e definido no Supabase com{' '}
+            Somente administradores podem editar resultados. O admin é definido no Supabase com{' '}
             <Text style={styles.code}>profiles.is_admin</Text>.
           </Text>
         </View>
@@ -90,7 +90,7 @@ export function AdminResultsScreen() {
         </View>
         <Text style={styles.header}>Resultados oficiais</Text>
         <Text style={styles.warning}>
-          Atualize os placares aqui. Assim que salvar, a pontuacao das apostas e recalculada automaticamente.
+          Atualize os placares aqui. Assim que salvar, a pontuação das apostas é recalculada automaticamente.
         </Text>
       </View>
       <FlatList

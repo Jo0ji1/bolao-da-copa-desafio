@@ -1,4 +1,4 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 import { theme } from '../constants/theme';
 
 type Props = {
@@ -6,16 +6,19 @@ type Props = {
   onPress: () => void;
   loading?: boolean;
   variant?: 'primary' | 'secondary' | 'danger';
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  compact?: boolean;
 };
 
-export function AppButton({ title, onPress, loading = false, variant = 'primary' }: Props) {
+export function AppButton({ title, onPress, loading = false, variant = 'primary', style, textStyle, compact = false }: Props) {
   return (
     <Pressable
       disabled={loading}
       onPress={onPress}
-      style={[styles.button, variantStyles[variant], loading && styles.disabled]}
+      style={[styles.button, compact && styles.compact, variantStyles[variant], loading && styles.disabled, style]}
     >
-      {loading ? <ActivityIndicator color={theme.colors.text} /> : <Text style={styles.text}>{title}</Text>}
+      {loading ? <ActivityIndicator color={theme.colors.text} /> : <Text style={[styles.text, compact && styles.compactText, textStyle]}>{title}</Text>}
     </Pressable>
   );
 }
@@ -38,6 +41,15 @@ const styles = StyleSheet.create({
     color: theme.colors.text,
     fontWeight: '800',
     letterSpacing: 0.2,
+  },
+  compact: {
+    minHeight: 40,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+  },
+  compactText: {
+    fontSize: 13,
   },
   disabled: {
     opacity: 0.7,

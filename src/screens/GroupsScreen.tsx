@@ -63,13 +63,13 @@ export function GroupsScreen() {
     await supabase.from('pool_members').insert({ pool_id: data.id, user_id: session.user.id });
 
     setGroupName('');
-    Alert.alert('Grupo criado', `Codigo do grupo: ${data.code}`);
+    Alert.alert('Grupo criado', `Código do grupo: ${data.code}`);
     await loadPools();
   };
 
   const joinGroup = async () => {
     if (!session?.user.id || !joinCode.trim()) {
-      Alert.alert('Atenção', 'Informe o codigo do grupo.');
+      Alert.alert('Atenção', 'Informe o código do grupo.');
       return;
     }
 
@@ -80,7 +80,7 @@ export function GroupsScreen() {
       .single();
 
     if (poolError || !pool) {
-      Alert.alert('Erro', 'Grupo nao encontrado para esse codigo.');
+      Alert.alert('Erro', 'Grupo não encontrado para esse código.');
       return;
     }
 
@@ -95,7 +95,7 @@ export function GroupsScreen() {
     }
 
     setJoinCode('');
-    Alert.alert('Sucesso', `Voce entrou no grupo ${pool.name}.`);
+    Alert.alert('Sucesso', `Você entrou no grupo ${pool.name}.`);
     await loadPools();
   };
 
@@ -133,7 +133,7 @@ export function GroupsScreen() {
       <View style={styles.card}>
         <View style={styles.cardTitleRow}>
           <MaterialCommunityIcons name="key-variant" size={18} color={theme.colors.accent} />
-          <Text style={styles.cardTitle}>Entrar por codigo</Text>
+          <Text style={styles.cardTitle}>Entrar por código</Text>
         </View>
         <TextInput
           style={styles.input}
@@ -156,10 +156,10 @@ export function GroupsScreen() {
         renderItem={({ item }) => (
           <View style={styles.groupRow}>
             <Text style={styles.groupName}>{item.name}</Text>
-            <Text style={styles.groupCode}>Codigo: {item.code}</Text>
+            <Text style={styles.groupCode}>Código: {item.code}</Text>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.empty}>Voce ainda nao participa de grupos.</Text>}
+        ListEmptyComponent={<Text style={styles.empty}>Você ainda não participa de grupos.</Text>}
         contentContainerStyle={{ paddingBottom: 24, gap: 8 }}
       />
     </View>

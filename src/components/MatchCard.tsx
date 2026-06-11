@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { theme } from '../constants/theme';
 import { MatchItem, Prediction, Winner } from '../types';
 import { AppButton } from './AppButton';
@@ -30,6 +30,14 @@ export function MatchCard({
   onSave,
 }: Readonly<Props>) {
   const statusLabel = match.status === 'finished' ? 'Encerrada' : 'Aberta para palpite';
+  const { width } = useWindowDimensions();
+  const compact = width < 410;
+
+  const winnerOptions: Array<{ label: string; value: Winner }> = [
+    { label: 'Casa', value: 'home' },
+    { label: 'Empate', value: 'draw' },
+    { label: 'Fora', value: 'away' },
+  ];
 
   return (
     <View style={styles.card}>
@@ -43,7 +51,7 @@ export function MatchCard({
         </View>
       </View>
 
-      <View style={styles.matchLine}>
+      <View style={[styles.matchLine, compact && styles.matchLineCompact]}>
         <Text style={styles.teams}>
           {match.home_team}
         </Text>
@@ -89,9 +97,20 @@ export function MatchCard({
       </View>
 
       <View style={styles.winnerRow}>
-        <AppButton title="Casa" onPress={() => onChangeWinner('home')} variant={draftWinner === 'home' ? 'primary' : 'secondary'} />
-        <AppButton title="Empate" onPress={() => onChangeWinner('draw')} variant={draftWinner === 'draw' ? 'primary' : 'secondary'} />
-        <AppButton title="Fora" onPress={() => onChangeWinner('away')} variant={draftWinner === 'away' ? 'primary' : 'secondary'} />
+        {winnerOptions.map((option) => {
+          const active = draftWinner === option.value;
+          return (
+            <Pressable
+              key={option.value}
+              onPress={() => onChangeWinner(option.value)}
+              style={[styles.winnerOption, active ? styles.winnerOptionActive : styles.winnerOptionInactive]}
+            >
+              <Text style={[styles.winnerOptionText, active ? styles.winnerOptionTextActive : styles.winnerOptionTextInactive]}>
+                {option.label}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
 
       {prediction && match.status === 'finished' && (
@@ -157,11 +176,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 8,
   },
+  matchLineCompact: {
+    gap: 4,
+  },
   teams: {
     color: theme.colors.text,
     fontSize: 18,
     fontWeight: '800',
     flex: 1,
+    textAlign: 'center',
   },
   kickoff: {
     color: theme.colors.textSoft,
@@ -218,7 +241,35 @@ const styles = StyleSheet.create({
   },
   winnerRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
+  },
+  winnerOption: {
+    flexGrow: 1,
+    flexBasis: 92,
+    minHeight: 42,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    paddingHorizontal: 8,
+  },
+  winnerOptionActive: {
+    borderColor: theme.colors.primary,
+    backgroundColor: theme.colors.primary,
+  },
+  winnerOptionInactive: {
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.cardAlt,
+  },
+  winnerOptionText: {
+    fontWeight: '800',
+  },
+  winnerOptionTextActive: {
+    color: theme.colors.text,
+  },
+  winnerOptionTextInactive: {
+    color: theme.colors.textSoft,
   },
   resultBox: {
     flexDirection: 'row',

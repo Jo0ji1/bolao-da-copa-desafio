@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, ListRenderItem, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { theme } from '../constants/theme';
@@ -9,6 +9,7 @@ import { AppButton } from '../components/AppButton';
 import { MatchCard } from '../components/MatchCard';
 
 type DraftMap = Record<string, { home: string; away: string; winner: Winner | null }>;
+type MatchFilter = 'all' | 'open' | 'finished' | 'mine';
 
 export function PredictionsScreen() {
   const { session } = useAuth();
@@ -17,6 +18,7 @@ export function PredictionsScreen() {
   const [draft, setDraft] = useState<DraftMap>({});
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [filter, setFilter] = useState<MatchFilter>('all');
 
   const fetchData = useCallback(async () => {
     if (!session?.user.id) {
@@ -87,12 +89,12 @@ export function PredictionsScreen() {
     const away = currentDraft.away ? Number(currentDraft.away) : null;
 
     if (home !== null && Number.isNaN(home)) {
-      Alert.alert('Valor invalido', 'Placar da casa invalido.');
+      Alert.alert('Valor inválido', 'Placar da casa inválido.');
       return;
     }
 
     if (away !== null && Number.isNaN(away)) {
-      Alert.alert('Valor invalido', 'Placar visitante invalido.');
+      Alert.alert('Valor inválido', 'Placar visitante inválido.');
       return;
     }
 
@@ -123,10 +125,6 @@ export function PredictionsScreen() {
     await fetchData();
   };
 
-  const scheduleAllReminders = async () => {
-    Alert.alert('Lembretes indisponiveis', 'No Expo Go, notificacoes push nao funcionam. Use um development build para habilitar esse recurso.');
-  };
-
   const upcomingCount = useMemo(
     () => matches.filter((match) => match.status === 'scheduled' && new Date(match.kickoff_at) > new Date()).length,
     [matches],
@@ -135,6 +133,51 @@ export function PredictionsScreen() {
   const finishedCount = useMemo(() => matches.filter((match) => match.status === 'finished').length, [matches]);
 
   const scoredCount = Object.values(predictions).filter((prediction) => prediction.points_awarded > 0).length;
+
+  const totalPoints = Object.values(predictions).reduce((sum, prediction) => sum + prediction.points_awarded, 0);
+
+  const filteredMatches = useMemo(() => {
+    if (filter === 'open') {
+      return matches.filter((match) => match.status === 'scheduled' && new Date(match.kickoff_at) > new Date());
+    }
+    if (filter === 'finished') {
+      return matches.filter((match) => match.status === 'finished');
+    }
+    if (filter === 'mine') {
+      return matches.filter((match) => Boolean(predictions[match.id]));
+    }
+    return matches;
+  }, [filter, matches, predictions]);
+
+  const filterButtons: Array<{ id: MatchFilter; label: string }> = [
+    { id: 'all', label: 'Todas' },
+    { id: 'open', label: 'Abertas' },
+    { id: 'finished', label: 'Encerradas' },
+    { id: 'mine', label: 'Meus palpites' },
+  ];
+
+  const renderMatch: ListRenderItem<MatchItem> = useCallback(
+    ({ item }) => {
+      const itemDraft = draft[item.id] ?? { home: '', away: '', winner: null };
+      const isEditable = item.status === 'scheduled' && new Date(item.kickoff_at) > new Date();
+
+      return (
+        <MatchCard
+          match={item}
+          prediction={predictions[item.id]}
+          draftHome={itemDraft.home}
+          draftAway={itemDraft.away}
+          draftWinner={itemDraft.winner}
+          editable={isEditable}
+          onChangeHome={(value) => setDraft((prev) => ({ ...prev, [item.id]: { ...itemDraft, home: value } }))}
+          onChangeAway={(value) => setDraft((prev) => ({ ...prev, [item.id]: { ...itemDraft, away: value } }))}
+          onChangeWinner={(winner) => setDraft((prev) => ({ ...prev, [item.id]: { ...itemDraft, winner } }))}
+          onSave={() => savePrediction(item)}
+        />
+      );
+    },
+    [draft, predictions],
+  );
 
   return (
     <View style={styles.container}>
@@ -149,7 +192,7 @@ export function PredictionsScreen() {
           </View>
         </View>
         <Text style={styles.header}>Palpites</Text>
-        <Text style={styles.subtitle}>Monte seus palpites antes do kickoff. O sistema bloqueia o jogo quando a partida comeca.</Text>
+        <Text style={styles.subtitle}>Monte seus palpites antes do kickoff. O sistema bloqueia o jogo quando a partida começa.</Text>
         <Text style={styles.summary}>{finishedCount}/{matches.length} partidas com resultado oficial</Text>
 
         <View style={styles.metricsRow}>
@@ -165,52 +208,45 @@ export function PredictionsScreen() {
             <Text style={styles.metricValue}>{matches.length}</Text>
             <Text style={styles.metricLabel}>Total de jogos</Text>
           </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricValue}>{totalPoints}</Text>
+            <Text style={styles.metricLabel}>Pontos somados</Text>
+          </View>
         </View>
-      </View>
-
-      <View style={styles.noticeCard}>
-        <MaterialCommunityIcons name="information-outline" size={18} color={theme.colors.accent} />
-        <Text style={styles.noticeText}>
-          Para simplificar o teste no Expo Go, os lembretes push estao desativados nesta versao. O app segue funcional.
-        </Text>
       </View>
 
       <View style={styles.howCard}>
         <Text style={styles.howTitle}>Como apostar</Text>
         <Text style={styles.howText}>1. Preencha placar exato ou apenas o vencedor.</Text>
-        <Text style={styles.howText}>2. Salve antes do inicio do jogo.</Text>
-        <Text style={styles.howText}>3. Quando o admin publica o resultado, a pontuacao atualiza automaticamente.</Text>
+        <Text style={styles.howText}>2. Salve antes do início do jogo.</Text>
+        <Text style={styles.howText}>3. Quando o admin publica o resultado, a pontuação atualiza automaticamente.</Text>
       </View>
 
-      <AppButton title="Ativar lembretes" onPress={scheduleAllReminders} variant="secondary" />
+      <View style={styles.filterRow}>
+        {filterButtons.map((item) => (
+          <AppButton
+            key={item.id}
+            title={item.label}
+            compact
+            style={styles.filterButton}
+            onPress={() => setFilter(item.id)}
+            variant={filter === item.id ? 'primary' : 'secondary'}
+          />
+        ))}
+      </View>
 
       <FlatList
         style={styles.list}
-        data={matches}
+        data={filteredMatches}
         keyExtractor={(item) => item.id}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.text} />}
+        removeClippedSubviews
+        initialNumToRender={6}
+        windowSize={7}
         ListEmptyComponent={
-          loading ? <Text style={styles.empty}>Carregando partidas...</Text> : <Text style={styles.empty}>Nenhuma partida cadastrada.</Text>
+          loading ? <Text style={styles.empty}>Carregando partidas...</Text> : <Text style={styles.empty}>Nenhuma partida encontrada neste filtro.</Text>
         }
-        renderItem={({ item }) => {
-          const itemDraft = draft[item.id] ?? { home: '', away: '', winner: null };
-          const isEditable = item.status === 'scheduled' && new Date(item.kickoff_at) > new Date();
-
-          return (
-            <MatchCard
-              match={item}
-              prediction={predictions[item.id]}
-              draftHome={itemDraft.home}
-              draftAway={itemDraft.away}
-              draftWinner={itemDraft.winner}
-              editable={isEditable}
-              onChangeHome={(value) => setDraft((prev) => ({ ...prev, [item.id]: { ...itemDraft, home: value } }))}
-              onChangeAway={(value) => setDraft((prev) => ({ ...prev, [item.id]: { ...itemDraft, away: value } }))}
-              onChangeWinner={(winner) => setDraft((prev) => ({ ...prev, [item.id]: { ...itemDraft, winner } }))}
-              onSave={() => savePrediction(item)}
-            />
-          );
-        }}
+        renderItem={renderMatch}
         contentContainerStyle={styles.content}
       />
     </View>
@@ -277,10 +313,12 @@ const styles = StyleSheet.create({
   },
   metricsRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
   },
   metricCard: {
-    flex: 1,
+    flexGrow: 1,
+    flexBasis: 78,
     backgroundColor: theme.colors.cardAlt,
     borderRadius: 18,
     paddingVertical: 12,
@@ -300,21 +338,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
     textAlign: 'center',
   },
-  noticeCard: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    backgroundColor: theme.colors.cardStrong,
-    borderRadius: 18,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-  },
-  noticeText: {
-    color: theme.colors.textSoft,
-    flex: 1,
-    lineHeight: 19,
-  },
   howCard: {
     backgroundColor: theme.colors.cardAlt,
     borderRadius: 20,
@@ -333,9 +356,14 @@ const styles = StyleSheet.create({
     color: theme.colors.textSoft,
     lineHeight: 20,
   },
-  notice: {
-    color: theme.colors.primary,
-    fontSize: 12,
+  filterRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  filterButton: {
+    flexGrow: 1,
+    minWidth: 130,
   },
   list: {
     marginTop: 8,

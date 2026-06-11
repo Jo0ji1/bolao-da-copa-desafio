@@ -68,7 +68,7 @@ export function RankingScreen() {
           <Text style={styles.heroNote}>{selectedPoolId ? 'Grupo ativo' : 'Visao geral'}</Text>
         </View>
         <Text style={styles.header}>Ranking</Text>
-        <Text style={styles.subtitle}>{selectedPoolId ? 'Ranking do grupo selecionado' : 'Ranking geral da competicao'}</Text>
+        <Text style={styles.subtitle}>{selectedPoolId ? 'Ranking do grupo selecionado' : 'Ranking geral da competição'}</Text>
       </View>
 
       <View style={styles.filterRow}>

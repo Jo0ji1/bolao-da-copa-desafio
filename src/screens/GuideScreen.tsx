@@ -70,8 +70,8 @@ export function GuideScreen() {
         <View style={{ flex: 1 }}>
           <Text style={styles.calloutTitle}>Admin definido no banco</Text>
           <Text style={styles.calloutText}>
-            O administrador e um usuario comum cuja coluna <Text style={styles.code}>profiles.is_admin</Text> foi ativada no Supabase.
-            Assim o app nao precisa de um login separado para o controle oficial.
+            O administrador é um usuário comum cuja coluna <Text style={styles.code}>profiles.is_admin</Text> foi ativada no Supabase.
+            Assim o app não precisa de um login separado para o controle oficial.
           </Text>
         </View>
       </View>
