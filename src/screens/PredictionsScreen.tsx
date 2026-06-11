@@ -6,7 +6,6 @@ import { MatchItem, Prediction, Winner } from '../types';
 import { supabase } from '../lib/supabase';
 import { AppButton } from '../components/AppButton';
 import { MatchCard } from '../components/MatchCard';
-import { enableLocalNotifications, isExpoGoPushUnsupportedMessage, scheduleMatchReminder } from '../lib/notifications';
 
 type DraftMap = Record<string, { home: string; away: string; winner: Winner | null }>;
 
@@ -124,18 +123,7 @@ export function PredictionsScreen() {
   };
 
   const scheduleAllReminders = async () => {
-    const enabled = await enableLocalNotifications();
-    if (!enabled) {
-      Alert.alert('Aviso', 'Permissao de notificacoes negada.');
-      return;
-    }
-
-    const upcoming = matches.filter((match) => new Date(match.kickoff_at) > new Date() && match.status === 'scheduled');
-    for (const match of upcoming) {
-      await scheduleMatchReminder(match.home_team, match.away_team, match.kickoff_at);
-    }
-
-    Alert.alert('Lembretes ativos', 'Lembretes locais configurados para as proximas partidas.');
+    Alert.alert('Lembretes indisponiveis', 'No Expo Go, notificacoes push nao funcionam. Use um development build para habilitar esse recurso.');
   };
 
   const title = useMemo(() => {
@@ -147,7 +135,7 @@ export function PredictionsScreen() {
     <View style={styles.container}>
       <Text style={styles.header}>Palpites</Text>
       <Text style={styles.subtitle}>{title}</Text>
-      <Text style={styles.notice}>{isExpoGoPushUnsupportedMessage()}</Text>
+    <Text style={styles.notice}>No Expo Go, notificacoes push estao desativadas. O app continua funcionando normalmente.</Text>
       <AppButton title="Ativar lembretes" onPress={scheduleAllReminders} variant="secondary" />
 
       <FlatList
