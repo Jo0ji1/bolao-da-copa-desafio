@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "copa_dev",
-    "slug": "copa_dev",
+    "name": "Bolao da Copa",
+    "slug": "bolao-da-copa",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "bolaocopa",
     "ios": {
       "supportsTablet": true
     },
