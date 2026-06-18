@@ -1,0 +1,35 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="36" fill="#07111F"/>
+  <circle cx="981" cy="132" r="180" fill="#173056" opacity="0.45"/>
+  <circle cx="1085" cy="590" r="196" fill="#0E213E" opacity="0.9"/>
+  <rect x="56" y="56" width="1088" height="568" rx="28" fill="#0D1B30" stroke="#2B405E" stroke-width="2"/>
+  <rect x="96" y="104" width="420" height="44" rx="22" fill="#1F355D"/>
+  <text x="122" y="133" fill="#F7A41D" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">⚽ Palpites ao vivo</text>
+  <text x="96" y="205" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="800">Bolão da Copa</text>
+  <text x="96" y="248" fill="#C7D5EA" font-family="Arial, Helvetica, sans-serif" font-size="24">App mobile para palpites, ranking, grupos privados e gestão da competição.</text>
+  <rect x="96" y="292" width="214" height="108" rx="24" fill="#12213A" stroke="#2B405E"/>
+  <rect x="332" y="292" width="214" height="108" rx="24" fill="#12213A" stroke="#2B405E"/>
+  <rect x="568" y="292" width="214" height="108" rx="24" fill="#12213A" stroke="#2B405E"/>
+  <text x="188" y="340" text-anchor="middle" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="800">48</text>
+  <text x="188" y="372" text-anchor="middle" fill="#90A4BF" font-family="Arial, Helvetica, sans-serif" font-size="20">jogos previstos</text>
+  <text x="440" y="340" text-anchor="middle" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="800">5 pts</text>
+  <text x="440" y="372" text-anchor="middle" fill="#90A4BF" font-family="Arial, Helvetica, sans-serif" font-size="20">placar exato</text>
+  <text x="675" y="340" text-anchor="middle" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="800">3 pts</text>
+  <text x="675" y="372" text-anchor="middle" fill="#90A4BF" font-family="Arial, Helvetica, sans-serif" font-size="20">vencedor correto</text>
+  <rect x="835" y="118" width="242" height="428" rx="32" fill="#12213A" stroke="#2B405E" stroke-width="2"/>
+  <rect x="860" y="158" width="192" height="30" rx="15" fill="#F7A41D" opacity="0.18"/>
+  <text x="882" y="179" fill="#F7A41D" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Tela inicial do app</text>
+  <text x="860" y="232" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">Palpites</text>
+  <text x="860" y="266" fill="#C7D5EA" font-family="Arial, Helvetica, sans-serif" font-size="16">Resumo do usuário, filtros rápidos e jogos da rodada.</text>
+  <rect x="860" y="296" width="192" height="68" rx="18" fill="#1B2D4E" stroke="#2B405E"/>
+  <text x="888" y="324" fill="#F7A41D" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700">Fase de grupos</text>
+  <text x="888" y="350" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Brasil x Sérvia</text>
+  <rect x="860" y="392" width="90" height="42" rx="14" fill="#1F355D"/>
+  <rect x="962" y="392" width="90" height="42" rx="14" fill="#1F355D"/>
+  <text x="905" y="419" text-anchor="middle" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Casa</text>
+  <text x="1007" y="419" text-anchor="middle" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Fora</text>
+  <rect x="860" y="455" width="192" height="48" rx="16" fill="#F7A41D"/>
+  <text x="956" y="486" text-anchor="middle" fill="#07111F" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">Salvar palpite</text>
+  <text x="97" y="512" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800">Tecnologias</text>
+  <text x="97" y="552" fill="#C7D5EA" font-family="Arial, Helvetica, sans-serif" font-size="22">Expo • React Native • TypeScript • Supabase • React Navigation</text>
+</svg>

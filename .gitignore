@@ -34,6 +34,12 @@ yarn-error.*
 .env
 .env*.local
 
+# editor and assistant metadata
+.vscode/
+.claude/
+AGENTS.md
+CLAUDE.md
+
 # typescript
 *.tsbuildinfo
 
